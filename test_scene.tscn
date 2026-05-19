@@ -22,6 +22,8 @@ mesh = SubResource("BoxMesh_6adnx")
 [node name="Node3D" parent="." unique_id=220138385 node_paths=PackedStringArray("camera") instance=ExtResource("2_ia1lp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23472953, 1.7159752, -0.19054258)
 speed = 8
+fall_acceleration = 35
+jump_velocity = 10.0
 camera = NodePath("Camera3D")
 
 [node name="Camera3D" type="Camera3D" parent="Node3D" unique_id=919774674 node_paths=PackedStringArray("target")]
@@ -33,3 +35,7 @@ height = 0.765
 smoothness = 10.0
 rotation_smoothness = 2.0
 look_at_offset = Vector3(0, 1, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2071361031]
+transform = Transform3D(1, 0, 0, 0, -0.010750965, 0.9999422, 0, -0.9999422, -0.010750965, 0, 3.355919, 0)
+shadow_enabled = true
