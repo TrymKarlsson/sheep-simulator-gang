@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://dg54w3xvxaa8r"]
+
+[ext_resource type="PackedScene" uid="uid://iwlmauaga8o8" path="res://ragooncolliderandscript.tscn" id="2_ia1lp"]
+[ext_resource type="Script" uid="uid://cva7oj3ryjdtq" path="res://camera_3d.gd" id="2_sasra"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uhqqe"]
+size = Vector3(25, 1, 25)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6adnx"]
+size = Vector3(25, 1, 25)
+
+[node name="TestScene" type="Node3D" unique_id=45618178]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=978468083]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=2021830699]
+shape = SubResource("BoxShape3D_uhqqe")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=674064748]
+mesh = SubResource("BoxMesh_6adnx")
+
+[node name="Node3D" parent="." unique_id=220138385 node_paths=PackedStringArray("camera") instance=ExtResource("2_ia1lp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23472953, 1.7159752, -0.19054258)
+speed = 8
+camera = NodePath("Camera3D")
+
+[node name="Camera3D" type="Camera3D" parent="Node3D" unique_id=919774674 node_paths=PackedStringArray("target")]
+transform = Transform3D(1, 0, 0, 0, 0.8710681, 0.4911622, 0, -0.4911622, 0.8710681, 0, 0.7137476, 1.837)
+script = ExtResource("2_sasra")
+target = NodePath("..")
+distance = 2.19
+height = 0.765
+smoothness = 10.0
+rotation_smoothness = 2.0
+look_at_offset = Vector3(0, 1, 0)
