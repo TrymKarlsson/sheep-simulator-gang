@@ -7,13 +7,18 @@ extends CharacterBody3D
 @export var jump_velocity = 8.0
 @export var turn_speed = 10.0
 @export var brake_speed = 15.0
-@export var acceleration = 3.0  # hur snabbt man når tophastighet (lägre = trögare)
+@export var acceleration = 3.0
 @export var camera: Camera3D
 
 var smooth_direction = Vector3.ZERO
-var smooth_speed = 0.0  # nuvarande hastighet som lerpar
+var smooth_speed = 0.0
+var is_jumping = false
 
 @onready var anim_tree = $Pivot/Sketchfab_Scene/AnimationTree
+@onready var anim_state: AnimationNodeStateMachinePlayback = $Pivot/Sketchfab_Scene/AnimationTree.get("parameters/StateMachine/playback")
+
+func _ready():
+	print(anim_state)
 
 func _physics_process(delta):
 	var input_dir = Vector3.ZERO
@@ -22,7 +27,6 @@ func _physics_process(delta):
 	if Input.is_action_pressed("Left"):      input_dir.x -= 1
 	if Input.is_action_pressed("Right"):     input_dir.x += 1
 
-	# Målhastighet beroende på input
 	var target_speed
 	if Input.is_action_pressed("Run"):
 		target_speed = run_speed
@@ -31,11 +35,9 @@ func _physics_process(delta):
 	else:
 		target_speed = speed
 
-	# Om ingen input — bromsa mot 0
 	if input_dir == Vector3.ZERO:
 		target_speed = 0.0
 
-	# Lerpa smooth_speed mot target_speed
 	smooth_speed = lerp(smooth_speed, target_speed, acceleration * delta)
 
 	var direction = Vector3.ZERO
@@ -58,15 +60,23 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= fall_acceleration * delta
 
+	# Hopp
 	if Input.is_action_just_pressed("Jump") and is_on_floor():
 		velocity.y = jump_velocity
+		is_jumping = true
+		anim_state.travel("jump")
+
+	# Tillbaka till locomotion när man landar
+	if is_jumping and is_on_floor() and velocity.y <= 0:
+		is_jumping = false
+		anim_state.travel("locomotion")
 
 	move_and_slide()
 
-	# Animation blend
-	var current_velocity = Vector2(velocity.x, velocity.z).length()
-	var blend = 0.0
-	if current_velocity > 0.1:
-		blend = clamp(remap(current_velocity, 0.0, run_speed, 0.0, 1.0), 0.0, 1.0)
-	anim_tree.set("parameters/stillwalkrunblend/blend_position", blend)
-	print(blend)
+	# Animation blend (bara när inte hoppas)
+	if not is_jumping:
+		var current_velocity = Vector2(velocity.x, velocity.z).length()
+		var blend = 0.0
+		if current_velocity > 0.1:
+			blend = clamp(remap(current_velocity, 0.0, run_speed, 0.0, 1.0), 0.0, 1.0)
+		anim_tree.set("parameters/StateMachine/locomotion/blend_position", blend)
