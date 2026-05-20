@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://iwlmauaga8o8" path="res://ragooncolliderandscript.tscn" id="2_ia1lp"]
 [ext_resource type="Script" uid="uid://cva7oj3ryjdtq" path="res://camera_3d.gd" id="2_sasra"]
+[ext_resource type="Script" uid="uid://clyh5iftqm3ha" path="res://EmoteWheel.gd" id="3_sasra"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uhqqe"]
 size = Vector3(25, 1, 25)
@@ -19,11 +20,12 @@ shape = SubResource("BoxShape3D_uhqqe")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=674064748]
 mesh = SubResource("BoxMesh_6adnx")
 
-[node name="Node3D" parent="." unique_id=220138385 node_paths=PackedStringArray("camera") instance=ExtResource("2_ia1lp")]
+[node name="Node3D" parent="." unique_id=220138385 node_paths=PackedStringArray("camera", "emote_wheel") instance=ExtResource("2_ia1lp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23472953, 1.7159752, -0.19054258)
-fall_acceleration = 35
+fall_acceleration = 20.0
 jump_velocity = 10.0
 camera = NodePath("Camera3D")
+emote_wheel = NodePath("../CanvasLayer/Control")
 
 [node name="Camera3D" type="Camera3D" parent="Node3D" unique_id=919774674 node_paths=PackedStringArray("target")]
 transform = Transform3D(1, 0, 0, 0, 0.8710681, 0.4911622, 0, -0.4911622, 0.8710681, 0, 0.7137476, 1.837)
@@ -38,3 +40,14 @@ look_at_offset = Vector3(0, 1, 0)
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2071361031]
 transform = Transform3D(1, 0, 0, 0, -0.010750965, 0.9999422, 0, -0.9999422, -0.010750965, 0, 3.355919, 0)
 shadow_enabled = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=865736207]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1108360234]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_sasra")

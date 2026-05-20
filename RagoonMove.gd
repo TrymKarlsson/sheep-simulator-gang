@@ -9,16 +9,20 @@ extends CharacterBody3D
 @export var brake_speed = 15.0
 @export var acceleration = 3.0
 @export var camera: Camera3D
+@export var emote_wheel: Control
 
 var smooth_direction = Vector3.ZERO
 var smooth_speed = 0.0
 var is_jumping = false
+var is_emoting = false
 
 @onready var anim_tree = $Pivot/Sketchfab_Scene/AnimationTree
 @onready var anim_state: AnimationNodeStateMachinePlayback = $Pivot/Sketchfab_Scene/AnimationTree.get("parameters/StateMachine/playback")
 
 func _ready():
 	print(anim_state)
+	if emote_wheel:
+		emote_wheel.hide()
 
 func _physics_process(delta):
 	var input_dir = Vector3.ZERO
@@ -61,20 +65,39 @@ func _physics_process(delta):
 		velocity.y -= fall_acceleration * delta
 
 	# Hopp
-	if Input.is_action_just_pressed("Jump") and is_on_floor():
+	if Input.is_action_just_pressed("Jump") and is_on_floor() and not is_emoting:
 		velocity.y = jump_velocity
 		is_jumping = true
 		anim_state.travel("jump")
 
-	# Tillbaka till locomotion när man landar
 	if is_jumping and is_on_floor() and velocity.y <= 0:
 		is_jumping = false
 		anim_state.travel("locomotion")
 
+	# Visa hjulet medan B hålls in
+	if emote_wheel:
+		if Input.is_action_pressed("EmoteWheel") and is_on_floor() and not is_jumping and not is_emoting:
+			emote_wheel.show()
+		else:
+			emote_wheel.hide()
+
+	# Trigga animation när B släpps
+	if Input.is_action_just_released("EmoteWheel") and is_on_floor() and not is_jumping:
+		if emote_wheel:
+			var chosen = emote_wheel.get_selected_emote()
+			if chosen != "" and not is_emoting:
+				is_emoting = true
+				anim_state.travel(chosen)
+
+	# Avbryt emote om man rör sig
+	if is_emoting and input_dir != Vector3.ZERO:
+		is_emoting = false
+		anim_state.travel("locomotion")
+
 	move_and_slide()
 
-	# Animation blend (bara när inte hoppas)
-	if not is_jumping:
+	# Animation blend
+	if not is_jumping and not is_emoting:
 		var current_velocity = Vector2(velocity.x, velocity.z).length()
 		var blend = 0.0
 		if current_velocity > 0.1:
