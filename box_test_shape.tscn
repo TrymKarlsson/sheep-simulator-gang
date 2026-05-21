@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://ddgi1sxutt1gw"]
+
+[ext_resource type="Script" uid="uid://0sg2c26wyw1d" path="res://box_test_shape.gd" id="1_kmvfk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_20cpy"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yu7wv"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="BoxTestShape" type="RigidBody3D" unique_id=1877902846]
+mass = 0.404
+gravity_scale = 0.542
+script = ExtResource("1_kmvfk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=582078703]
+mesh = SubResource("BoxMesh_20cpy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1077914955]
+shape = SubResource("BoxShape3D_yu7wv")
+debug_color = Color(0.63511187, 0.5276854, 5.7756904e-07, 0.41960785)

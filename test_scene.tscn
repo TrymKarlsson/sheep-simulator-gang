@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://iwlmauaga8o8" path="res://ragooncolliderandscript.tscn" id="2_ia1lp"]
 [ext_resource type="Script" uid="uid://cva7oj3ryjdtq" path="res://camera_3d.gd" id="2_sasra"]
 [ext_resource type="Script" uid="uid://clyh5iftqm3ha" path="res://EmoteWheel.gd" id="3_sasra"]
+[ext_resource type="PackedScene" uid="uid://ddgi1sxutt1gw" path="res://box_test_shape.tscn" id="4_coq8p"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uhqqe"]
 size = Vector3(25, 1, 25)
@@ -20,10 +21,16 @@ shape = SubResource("BoxShape3D_uhqqe")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=674064748]
 mesh = SubResource("BoxMesh_6adnx")
 
-[node name="Node3D" parent="." unique_id=220138385 node_paths=PackedStringArray("camera", "emote_wheel") instance=ExtResource("2_ia1lp")]
+[node name="Node3D" parent="." unique_id=2074537128 node_paths=PackedStringArray("camera", "emote_wheel") instance=ExtResource("2_ia1lp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23472953, 1.7159752, -0.19054258)
+speed = 8.0
+run_speed = 16.0
+slow_speed = 4.0
 fall_acceleration = 20.0
 jump_velocity = 10.0
+turn_speed = 10.0
+brake_speed = 15.0
+acceleration = 3.0
 camera = NodePath("Camera3D")
 emote_wheel = NodePath("../CanvasLayer/Control")
 
@@ -51,3 +58,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_sasra")
+
+[node name="BoxTestShape" parent="." unique_id=1877902846 instance=ExtResource("4_coq8p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2306223, 1, -2.450008)

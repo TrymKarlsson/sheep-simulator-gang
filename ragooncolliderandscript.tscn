@@ -8,7 +8,14 @@ size = Vector3(0.235, 0.425, 0.795)
 
 [node name="CharacterBody3D" type="CharacterBody3D" unique_id=2074537128]
 script = ExtResource("1_18lsn")
+speed = null
+run_speed = null
+slow_speed = null
+fall_acceleration = null
 jump_velocity = 20.0
+turn_speed = null
+brake_speed = null
+acceleration = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2093309652]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.19369411, -0.07198575)
