@@ -118,9 +118,12 @@ func _physics_process(delta):
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
 		if collider is RigidBody3D:
-			var dir = collision.get_normal() * -1
+			var current_vel = Vector2(velocity.x, velocity.z).length()
+			var dir = -collision.get_normal()
 			dir.y = push_up
-			collider.apply_central_impulse(dir * push_force)
+			# Kontaktpunkten relativt blockets center – skapar rotation
+			var contact_point = collision.get_position() - collider.global_position
+			collider.apply_impulse(dir.normalized() * current_vel * push_force, contact_point)
 
 	# Locomotion blend
 	if not is_jumping and not is_emoting and not emote_frozen:

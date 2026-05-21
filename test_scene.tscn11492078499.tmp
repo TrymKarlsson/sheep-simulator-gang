@@ -6,10 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://ddgi1sxutt1gw" path="res://box_test_shape.tscn" id="4_coq8p"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uhqqe"]
-size = Vector3(250, 1, 250)
+size = Vector3(25, 1, 25)
 
 [sub_resource type="BoxMesh" id="BoxMesh_6adnx"]
-size = Vector3(250, 1, 250)
+size = Vector3(25, 1, 25)
 
 [node name="TestScene" type="Node3D" unique_id=45618178]
 
@@ -60,6 +60,4 @@ grow_vertical = 2
 script = ExtResource("3_sasra")
 
 [node name="BoxTestShape" parent="." unique_id=1877902846 instance=ExtResource("4_coq8p")]
-transform = Transform3D(1, 0, 0, 0, 0.99999917, 0.00127409, 0, -0.00127409, 0.99999917, -0.07854843, 1, 2.7604408)
-mass = 6.806
-gravity_scale = 1.04
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2306223, 1, -2.450008)
