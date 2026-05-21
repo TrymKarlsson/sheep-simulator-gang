@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://d3safmyw471gc" path="res://trophy/day31_trophy.glb" id="1_158bs"]
 [ext_resource type="Script" uid="uid://b1v4bakri3b23" path="res://trophy.gd" id="1_uxowg"]
+[ext_resource type="Script" uid="uid://dgvtycrmaeqc4" path="res://trophy.anim.gd" id="2_qntm3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_158bs"]
 size = Vector3(0.87, 0.765, 0.635)
@@ -14,6 +15,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49612463, 0)
 shape = SubResource("BoxShape3D_158bs")
 
 [node name="Node3D" type="Node3D" parent="." unique_id=1215991809]
+script = ExtResource("2_qntm3")
 
 [node name="Sketchfab_Scene" parent="Node3D" unique_id=1060813507 instance=ExtResource("1_158bs")]
-transform = Transform3D(0.16, 0, 0, 0, 0.16, 0, 0, 0, 0.16, 0, 0, 0)
+transform = Transform3D(0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0.114, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1472072095]
