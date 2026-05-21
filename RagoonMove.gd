@@ -9,6 +9,7 @@ extends CharacterBody3D
 @export var acceleration = 3.0
 @export var push_force = 8.0
 @export var push_up = 0.3
+@export var rod_lunge = 20.0
 @export var camera: Camera3D
 @export var emote_wheel: Control
 
@@ -17,6 +18,9 @@ var smooth_speed = 0.0
 var is_jumping = false
 var is_emoting = false
 var emote_frozen = false
+var is_rodding = false
+var rod_timer = 0.0
+var rod_lunge_dir = Vector3.ZERO
 var current_emote = ""
 var one_shot_emotes = ["death_emote", "stand_to_sitting_emote"]
 
@@ -65,7 +69,7 @@ func _physics_process(delta):
 		velocity.y -= fall_acceleration * delta
 
 	# Hopp
-	if Input.is_action_just_pressed("Jump") and is_on_floor() and not is_emoting and not emote_frozen:
+	if Input.is_action_just_pressed("Jump") and is_on_floor() and not is_emoting and not emote_frozen and not is_rodding:
 		velocity.y = jump_velocity
 		is_jumping = true
 		is_emoting = false
@@ -76,6 +80,28 @@ func _physics_process(delta):
 	if is_jumping and is_on_floor() and velocity.y <= 0:
 		is_jumping = false
 		anim_state.start("locomotion")
+
+	# Stånga – starta
+	if Input.is_action_just_pressed("Rod") and is_on_floor() and not is_jumping and not is_emoting and not is_rodding:
+		is_rodding = true
+		rod_timer = 0.0
+		rod_lunge_dir = -$Pivot.global_transform.basis.z
+		rod_lunge_dir.y = 0
+		rod_lunge_dir = rod_lunge_dir.normalized()
+		anim_tree.active = true
+		anim_state.start("rod_emote")
+
+	# Stånga – räkna timer och applicera luns vid rätt tidpunkt
+	if is_rodding:
+		rod_timer += delta
+		# Applicera acceleration under en kort period istället för teleport
+		if rod_timer >= 0.4 and rod_timer <= 0.5:
+			velocity += rod_lunge_dir * rod_lunge
+		# Kolla om animationen är klar
+		var node = anim_state.get_current_node()
+		if node != "rod_emote" and rod_timer > 0.3:
+			is_rodding = false
+			anim_state.start("locomotion")
 
 	# Kolla om one-shot emote är klar – frys AnimationTree på sista frame
 	if is_emoting and current_emote in one_shot_emotes:
@@ -121,12 +147,12 @@ func _physics_process(delta):
 			var current_vel = Vector2(velocity.x, velocity.z).length()
 			var dir = -collision.get_normal()
 			dir.y = push_up
-			# Kontaktpunkten relativt blockets center – skapar rotation
 			var contact_point = collision.get_position() - collider.global_position
-			collider.apply_impulse(dir.normalized() * current_vel * push_force, contact_point)
+			var force = max(current_vel, 3.0)
+			collider.apply_impulse(dir.normalized() * force * push_force, contact_point)
 
 	# Locomotion blend
-	if not is_jumping and not is_emoting and not emote_frozen:
+	if not is_jumping and not is_emoting and not emote_frozen and not is_rodding:
 		var current_velocity = Vector2(velocity.x, velocity.z).length()
 		var blend = 0.0
 		if current_velocity > 0.1:
