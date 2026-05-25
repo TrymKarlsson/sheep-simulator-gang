@@ -150,6 +150,9 @@ func _physics_process(delta):
 			var contact_point = collision.get_position() - collider.global_position
 			var force = max(current_vel, 3.0)
 			collider.apply_impulse(dir.normalized() * force * push_force, contact_point)
+		# Kolla om det är kungen och vi stångar
+		elif collider.has_method("die") and is_rodding:
+			collider.die()
 
 	# Locomotion blend
 	if not is_jumping and not is_emoting and not emote_frozen and not is_rodding:

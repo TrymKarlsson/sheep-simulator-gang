@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://c1fceffhdea7r"]
+
+[ext_resource type="PackedScene" uid="uid://bxv8sfayh1bim" path="res://king/armored_king.glb" id="1_m5og7"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m5og7"]
+animation = &"FIGHTIDLE_Root"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_acexy"]
+animation = &"WALK_player_Root"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i8v20"]
+animation = &"run_player_Root"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_2cl2o"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_m5og7")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_acexy")
+blend_point_1/pos = 0.5
+blend_point_2/node = SubResource("AnimationNodeAnimation_i8v20")
+blend_point_2/pos = 1.0
+min_space = 0.0
+
+[node name="Sketchfab_Scene" unique_id=707176573 instance=ExtResource("1_m5og7")]
+
+[node name="Skeleton3D" parent="Sketchfab_model/root/GLTF_SceneRootNode/unnamed_34/Root_33/GLTF_created_0" parent_id_path=PackedInt32Array(835699797) index="0" unique_id=491285988]
+bones/2/rotation = Quaternion(0.7070889, -0.005035797, 0.7070889, -0.005035753)
+bones/3/rotation = Quaternion(0.027707692, 0.0237386, 0.00020054415, 0.9993342)
+bones/4/rotation = Quaternion(0.13082159, 0.112270325, 0.011001953, 0.98496705)
+bones/5/rotation = Quaternion(0.1958342, -3.457717e-08, -7.469154e-09, 0.980637)
+bones/6/rotation = Quaternion(-0.27622768, -0.08287252, -0.09086677, 0.9531913)
+bones/7/rotation = Quaternion(0.82606715, -3.7190375e-08, -2.6908662e-09, 0.56357175)
+bones/8/rotation = Quaternion(0.5800023, 0.047865406, -0.062762395, 0.81078184)
+bones/9/rotation = Quaternion(0.5818876, -0.022953393, 0.06055728, 0.8106867)
+bones/10/rotation = Quaternion(0.7302252, 0.6527636, -0.16739872, 0.11246635)
+bones/11/rotation = Quaternion(-0.027849317, 0.25422108, 0.50402397, 0.82495815)
+bones/12/rotation = Quaternion(-0.78571224, 2.1420422e-07, 2.3469332e-07, 0.6185923)
+bones/13/rotation = Quaternion(0.051701885, -0.6572284, 0.020246238, 0.7516435)
+bones/14/rotation = Quaternion(0.4187636, -0.00024421487, 1.8626453e-08, 0.90809536)
+bones/15/rotation = Quaternion(0.665016, 1.3550743e-07, -6.519258e-08, 0.74682915)
+bones/16/rotation = Quaternion(0.708738, -0.6768155, 0.16126324, 0.11664283)
+bones/17/rotation = Quaternion(0.015254566, 0.083269455, -0.608005, 0.789407)
+bones/18/rotation = Quaternion(-0.8168299, 2.3655596e-07, 1.5273692e-07, 0.5768786)
+bones/19/rotation = Quaternion(0.07336226, 0.73388386, 0.0016429275, 0.6752998)
+bones/20/rotation = Quaternion(0.16958484, 0.00024421778, 5.681067e-08, 0.98551553)
+bones/21/rotation = Quaternion(0.6317871, 1.2945384e-07, -8.8475645e-08, 0.775142)
+bones/22/rotation = Quaternion(0.6453521, 0.110610776, 0.07300802, 0.75230026)
+bones/23/rotation = Quaternion(0.67048675, -0.051031187, -0.022219306, 0.7398309)
+bones/25/rotation = Quaternion(0.019034026, 0.4961445, 0.86601365, 0.059149146)
+bones/26/rotation = Quaternion(-0.81899506, 1.1692859e-08, -5.6744042e-08, 0.57380056)
+bones/27/rotation = Quaternion(0.37517357, 0.5385321, 0.49998826, 0.5650131)
+bones/28/rotation = Quaternion(1.6654765e-06, -9.869445e-07, 0.70710695, 0.7071066)
+bones/29/rotation = Quaternion(-0.030839056, -0.07732674, 0.9961614, 0.027058791)
+bones/30/rotation = Quaternion(-0.28154692, 2.7179203e-07, 2.7530117e-08, 0.95954746)
+bones/31/rotation = Quaternion(0.5547342, 0.41184446, 0.580333, 0.43112382)
+bones/32/rotation = Quaternion(0.0003641899, 0.0009904845, 0.70848775, 0.70572233)
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2" unique_id=511044498]
+tree_root = SubResource("AnimationNodeBlendSpace1D_2cl2o")
+anim_player = NodePath("../AnimationPlayer")
+parameters/blend_position = 1.050966

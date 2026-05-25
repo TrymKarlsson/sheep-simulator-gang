@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://f80ge73gkda2"]
+
+[ext_resource type="Script" uid="uid://bo5qxmvqyel6e" path="res://king.gd" id="1_7wk2u"]
+[ext_resource type="PackedScene" uid="uid://bxv8sfayh1bim" path="res://king/armored_king.glb" id="2_5mj7i"]
+[ext_resource type="PackedScene" uid="uid://c1fceffhdea7r" path="res://kinggoon.tscn" id="3_5mj7i"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dvb44"]
+size = Vector3(1, 1.975, 0.705)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ry3he"]
+radius = 8.0
+
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=746470820]
+script = ExtResource("1_7wk2u")
+
+[node name="Pivot" type="Node" parent="." unique_id=920169343]
+
+[node name="Sketchfab_Scene" parent="Pivot" unique_id=707176573 instance=ExtResource("2_5mj7i")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2136134512]
+shape = SubResource("BoxShape3D_dvb44")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1420701866]
+
+[node name="Area3D" type="Area3D" parent="." unique_id=2060889677]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1743515221]
+shape = SubResource("SphereShape3D_ry3he")
+
+[node name="Sketchfab_Scene" parent="." unique_id=1269728107 instance=ExtResource("3_5mj7i")]
