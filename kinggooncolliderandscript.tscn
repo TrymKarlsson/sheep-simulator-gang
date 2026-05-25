@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://bo5qxmvqyel6e" path="res://king.gd" id="1_7wk2u"]
 [ext_resource type="PackedScene" uid="uid://bxv8sfayh1bim" path="res://king/armored_king.glb" id="2_5mj7i"]
-[ext_resource type="PackedScene" uid="uid://c1fceffhdea7r" path="res://kinggoon.tscn" id="3_5mj7i"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dvb44"]
 size = Vector3(1, 1.975, 0.705)
@@ -16,15 +15,15 @@ script = ExtResource("1_7wk2u")
 [node name="Pivot" type="Node" parent="." unique_id=920169343]
 
 [node name="Sketchfab_Scene" parent="Pivot" unique_id=707176573 instance=ExtResource("2_5mj7i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.229308, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2136134512]
+[node name="shaperuntkungen" type="CollisionShape3D" parent="." unique_id=2136134512]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.108239, 0)
 shape = SubResource("BoxShape3D_dvb44")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1420701866]
 
 [node name="Area3D" type="Area3D" parent="." unique_id=2060889677]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1743515221]
+[node name="radius" type="CollisionShape3D" parent="Area3D" unique_id=1743515221]
 shape = SubResource("SphereShape3D_ry3he")
-
-[node name="Sketchfab_Scene" parent="." unique_id=1269728107 instance=ExtResource("3_5mj7i")]
