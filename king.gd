@@ -2,10 +2,11 @@ extends CharacterBody3D
 
 @export var speed = 4.0
 @export var run_speed = 8.0
-@export var detect_radius = 20.0
+@export var detect_radius = 40.0
 @export var attack_radius = 2.0
-@export var push_force = 5.0
+@export var push_force = 15.0
 @export var mesh_height_offset = 1.0
+@export var ragdoll_scene: PackedScene
 
 var player: CharacterBody3D = null
 var is_dead = false
@@ -94,21 +95,30 @@ func die():
 	activate_ragdoll()
 
 func activate_ragdoll():
-	# Spara positionen innan vi stänger av physics
-	var saved_pos = $Pivot/Sketchfab_Scene.global_position
-	var saved_rot = $Pivot/Sketchfab_Scene.rotation
-	
-	set_physics_process(false)
+	is_dead = true
 	if anim_tree:
 		anim_tree.active = false
 	anim_player.stop()
 	$shaperuntkungen.set_deferred("disabled", true)
 	
-	# Återställ positionen efter physics stängs av
-	$Pivot/Sketchfab_Scene.global_position = saved_pos
-	$Pivot/Sketchfab_Scene.rotation = saved_rot
+	# Spawna osynlig rigidbody på kungens position
+	var rb = RigidBody3D.new()
+	var shape = CollisionShape3D.new()
+	var box = BoxShape3D.new()
+	box.size = Vector3(1, 2, 1)
+	shape.shape = box
+	rb.add_child(shape)
+	get_parent().add_child(rb)
+	rb.global_position = global_position + Vector3(0, mesh_height_offset, 0)
+	rb.apply_central_impulse(Vector3(randf_range(-2,2), 2.0, randf_range(-2,2)))
 	
-	# Faller framåt och sjunker ihop
-	var tween = create_tween()
-	tween.tween_property($Pivot/Sketchfab_Scene, "rotation:x", 1.5, 0.5)
-	tween.parallel().tween_property($Pivot/Sketchfab_Scene, "position:y", saved_pos.y - 1.0, 0.5)
+	# Låt meshen följa rigidbodyn varje frame
+	set_process(true)
+	set_meta("ragdoll_body", rb)
+
+func _process(delta):
+	if is_dead and has_meta("ragdoll_body"):
+		var rb = get_meta("ragdoll_body")
+		if is_instance_valid(rb):
+			$Pivot/Sketchfab_Scene.global_position = rb.global_position
+			$Pivot/Sketchfab_Scene.global_rotation = rb.global_rotation

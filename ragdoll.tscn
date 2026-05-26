@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://mnk3b7ti34c7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s1edl"]
+size = Vector3(1.055, 1.675, 1)
+
+[node name="RigidBody3D" type="RigidBody3D" unique_id=1214386935]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=42663623]
+shape = SubResource("BoxShape3D_s1edl")
