@@ -6,10 +6,10 @@ extends CharacterBody3D
 @export var attack_radius = 2.0
 @export var push_force = 15.0
 @export var mesh_height_offset = 1.0
-@export var ragdoll_scene: PackedScene
 
 var player: CharacterBody3D = null
 var is_dead = false
+var ragdoll_body = null
 
 @onready var anim_player = find_child("AnimationPlayer", true)
 @onready var anim_tree = find_child("AnimationTree", true)
@@ -31,7 +31,6 @@ func _physics_process(delta):
 	if is_dead:
 		return
 
-	# Synka mesh med position
 	$Pivot/Sketchfab_Scene.global_position = global_position + Vector3(0, mesh_height_offset, 0)
 
 	if not is_on_floor():
@@ -55,7 +54,6 @@ func _physics_process(delta):
 		move_and_slide()
 		return
 
-	# Rör sig direkt mot spelaren
 	var dir = (player.global_position - global_position).normalized()
 	dir.y = 0
 
@@ -63,12 +61,10 @@ func _physics_process(delta):
 	velocity.x = dir.x * target_speed
 	velocity.z = dir.z * target_speed
 
-	# Titta mot spelaren
 	if dir != Vector3.ZERO:
 		var angle = atan2(dir.x, dir.z) + PI
 		$Pivot/Sketchfab_Scene.rotation.y = angle
 
-	# Knuffa spelaren om nära
 	if dist < attack_radius:
 		var push_dir = (player.global_position - global_position).normalized()
 		push_dir.y = 0.2
@@ -76,7 +72,6 @@ func _physics_process(delta):
 
 	move_and_slide()
 
-	# Animation
 	var current_vel = Vector2(velocity.x, velocity.z).length()
 	if current_vel > 3.0:
 		if anim_player.current_animation != "run_player_Root":
@@ -95,13 +90,15 @@ func die():
 	activate_ragdoll()
 
 func activate_ragdoll():
-	is_dead = true
 	if anim_tree:
 		anim_tree.active = false
 	anim_player.stop()
 	$shaperuntkungen.set_deferred("disabled", true)
-	
-	# Spawna osynlig rigidbody på kungens position
+
+	var mesh = $Pivot/Sketchfab_Scene
+	var saved_pos = mesh.global_position
+	var saved_rot = mesh.global_rotation
+
 	var rb = RigidBody3D.new()
 	var shape = CollisionShape3D.new()
 	var box = BoxShape3D.new()
@@ -109,16 +106,24 @@ func activate_ragdoll():
 	shape.shape = box
 	rb.add_child(shape)
 	get_parent().add_child(rb)
-	rb.global_position = global_position + Vector3(0, mesh_height_offset, 0)
-	rb.apply_central_impulse(Vector3(randf_range(-2,2), 2.0, randf_range(-2,2)))
-	
-	# Låt meshen följa rigidbodyn varje frame
-	set_process(true)
-	set_meta("ragdoll_body", rb)
+	rb.global_position = saved_pos
+	rb.global_rotation = saved_rot
+
+	$Pivot.remove_child(mesh)
+	rb.add_child(mesh)
+	mesh.position = Vector3.ZERO
+	mesh.rotation = Vector3.ZERO
+
+	# Tyngre massa = kortare flygdistans
+	rb.mass = 4.0
+	rb.linear_damp = 1.0
+	rb.angular_damp = 0.5
+
+	# Mindre kraft vid dödsfall
+	rb.apply_central_impulse(Vector3(randf_range(-1.5, 1.5), 2.0, randf_range(-1.5, 1.5)))
+	rb.apply_torque_impulse(Vector3(randf_range(-3, 3), randf_range(-1, 1), randf_range(-3, 3)))
+
+	ragdoll_body = rb
 
 func _process(delta):
-	if is_dead and has_meta("ragdoll_body"):
-		var rb = get_meta("ragdoll_body")
-		if is_instance_valid(rb):
-			$Pivot/Sketchfab_Scene.global_position = rb.global_position
-			$Pivot/Sketchfab_Scene.global_rotation = rb.global_rotation
+	pass

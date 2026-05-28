@@ -33,6 +33,10 @@ func _ready():
 	if emote_wheel:
 		emote_wheel.hide()
 
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		get_tree().quit()
+
 func _physics_process(delta):
 	var input_dir = Vector3.ZERO
 	if Input.is_action_pressed("Forward"):    input_dir.z -= 1
@@ -94,10 +98,8 @@ func _physics_process(delta):
 	# Stånga – räkna timer och applicera luns vid rätt tidpunkt
 	if is_rodding:
 		rod_timer += delta
-		# Applicera acceleration under en kort period istället för teleport
 		if rod_timer >= 0.4 and rod_timer <= 0.5:
 			velocity += rod_lunge_dir * rod_lunge
-		# Kolla om animationen är klar
 		var node = anim_state.get_current_node()
 		if node != "rod_emote" and rod_timer > 0.3:
 			is_rodding = false
@@ -150,7 +152,6 @@ func _physics_process(delta):
 			var contact_point = collision.get_position() - collider.global_position
 			var force = max(current_vel, 3.0)
 			collider.apply_impulse(dir.normalized() * force * push_force, contact_point)
-		# Kolla om det är kungen och vi stångar
 		elif collider.has_method("die") and is_rodding:
 			collider.die()
 
