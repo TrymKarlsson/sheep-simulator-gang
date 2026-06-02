@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cj7ubfx0rchai"]
+
+[ext_resource type="PackedScene" uid="uid://bhpssod0gauy5" path="res://terrain.tscn" id="1_h8eve"]
+
+[node name="Node3D" type="Node3D" unique_id=1593778007]
+
+[node name="Sketchfab_Scene" parent="." unique_id=491108005 instance=ExtResource("1_h8eve")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)

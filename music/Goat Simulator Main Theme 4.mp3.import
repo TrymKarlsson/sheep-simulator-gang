@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://df636slbsbrjv"
+path="res://.godot/imported/Goat Simulator Main Theme 4.mp3-61b3f7f36fed97b25f447f308d901089.mp3str"
+
+[deps]
+
+source_file="res://music/Goat Simulator Main Theme 4.mp3"
+dest_files=["res://.godot/imported/Goat Simulator Main Theme 4.mp3-61b3f7f36fed97b25f447f308d901089.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
