@@ -130,12 +130,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.729082, 0.5, -21.677261)
 navigation_mesh = SubResource("NavigationMesh_8pr8v")
 
 [node name="CharacterBody3D" parent="." unique_id=746470820 instance=ExtResource("7_8pr8v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.855, 4.4210362, -1.676)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.855, 4.4210362, 45.94241)
 
 [node name="Sketchfab_Scene" parent="." unique_id=491108005 instance=ExtResource("8_buypi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -121.18999, 316.68307)
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=2060767527]
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer" parent="." unique_id=339835856]
 stream = ExtResource("9_njel3")
 autoplay = true
 
